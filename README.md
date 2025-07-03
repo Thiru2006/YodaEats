@@ -60,7 +60,7 @@ There is no server dependency; this is a static front-end project.
 
 ## Screenshots
 
-*(Add screenshots here to showcase the UI)*
+*(Will be Updated Soon)*
 
 ## License
 
@@ -68,5 +68,5 @@ This project is for educational and personal demonstration purposes.
 
 ## Credits
 
-Made with ❤️ by [Your Name]. Star Wars and Yoda references belong to their respective copyright owners.
+Made with ❤️ by Thirugnanam V S. Star Wars and Yoda references belong to their respective copyright owners.
 
