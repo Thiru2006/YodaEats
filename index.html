@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YodaEats - A Campus Food Delivery Experience</title>
+    <link rel="icon" href="logo.jpg" type="image/jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Opening Crawl Splash Screen -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="starfield"></div>
+        <div class="crawl-container">
+            <div class="crawl">
+                <div class="crawl-title">A long time ago in a campus far, far away...</div>
+                <div id="yoda-quote" class="yoda-quote"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fixed Header -->
+    <header id="main-header" class="main-header">
+        <div class="header-content">
+            <div class="logo-container">
+                <img src="Yoda_Logo.jpg" alt="YodaEats Logo" class="logo" height="100" width="100">
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-link" onclick="showSection('home')">Home</button>
+                <button class="nav-link" onclick="showSection('about')">About</button>
+                <button class="nav-link cart-btn" onclick="toggleCart()">
+                    Cart <span id="cart-count" class="cart-count">0</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Lightsaber -->
+    <div class="lightsaber-container">
+        <div class="lightsaber-hilt"></div>
+        <div id="lightsaber-blade" class="lightsaber-blade"></div>
+    </div>
+
+    <!-- Main Application -->
+    <main id="app-root" class="app-root">
+        <!-- Home Section -->
+        <section id="home-section" class="section home-section">
+            <div class="starfield-bg"></div>
+            <div class="container">
+                <div class="hero-banner">
+                    <h1 class="hero-title">YodaEats</h1>
+                    <p class="hero-subtitle">Your path to the food side, this is</p>
+                    <div class="hero-cards">
+                        <div class="hero-card" onclick="showSection('restaurants')">
+                            <div class="card-icon">🍕</div>
+                            <h3>Order Food</h3>
+                            <p>Satisfy your hunger, young Padawan</p>
+                        </div>
+                        <div class="hero-card" onclick="showSection('delivery')">
+                            <div class="card-icon">🚀</div>
+                            <h3>Earn Credits</h3>
+                            <p>Deliver food, earn credits you will</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="featured-restaurants">
+                    <h2>Featured Restaurants</h2>
+                    <div class="restaurant-carousel" id="restaurant-carousel">
+                        <!-- Restaurants will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Restaurants Section -->
+        <section id="restaurants-section" class="section restaurants-section">
+            <div class="container">
+                <h2>Choose Your Spot</h2>
+                <div class="restaurants-grid" id="restaurants-grid">
+                    <!-- Restaurant cards will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Restaurant Detail Section -->
+        <section id="restaurant-detail-section" class="section restaurant-detail-section">
+            <div class="container">
+                <div class="restaurant-detail" id="restaurant-detail">
+                    <!-- Restaurant details will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Delivery Section -->
+        <section id="delivery-section" class="section delivery-section">
+            <div class="container">
+                <div class="delivery-tabs">
+                    <button class="tab-btn active" onclick="showDeliveryTab('available')">Available Orders</button>
+                    <button class="tab-btn" onclick="showDeliveryTab('my-orders')">My Deliveries</button>
+                </div>
+                <div id="available-orders" class="delivery-content">
+                    <h2>Available Delivery Orders</h2>
+                    <div class="orders-grid" id="available-orders-grid">
+                        <!-- Available orders will be populated by JavaScript -->
+                    </div>
+                </div>
+                <div id="my-orders" class="delivery-content" style="display: none;">
+                    <h2>My Deliveries</h2>
+                    <div class="earnings-display">
+                        <h3>Total Earnings: ₹<span id="total-earnings">0</span></h3>
+                    </div>
+                    <div class="orders-grid" id="my-orders-grid">
+                        <!-- My orders will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about-section" class="section about-section">
+            <div class="container">
+                <div class="about-content">
+                    <h2>About YodaEats</h2>
+                    <div class="about-text">
+                        <p>In a galaxy not so far away, on a campus filled with hungry students, YodaEats was born. Our mission is simple: to bring balance to the Force... and food to your dorm.</p>
+                        <p>Whether you seek sustenance from the finest places in the academic sector, or wish to earn credits by delivering meals across the campus systems, YodaEats connects you with the food delivery network you need.</p>
+                        <p>Remember, young Padawan: "Do or do not, there is no try"... but there is definitely delivery!</p>
+                        <div class="about-features">
+                            <div class="feature">
+                                <h4>Order from 4 Elite Yoda's Spots</h4>
+                                <p>North Square, Gazebo, Dominos, and GymKhana await your orders</p>
+                            </div>
+                            <div class="feature">
+                                <h4>Earn Credits by Delivering</h4>
+                                <p>Help fellow students and earn ₹40-70 per delivery</p>
+                            </div>
+                            <div class="feature">
+                                <h4>Campus-Wide Delivery</h4>
+                                <p>From Academic Blocks to Admin Building, we deliver everywhere</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button class="close-cart" onclick="toggleCart()">×</button>
+        </div>
+        <div class="cart-content" id="cart-content">
+            <!-- Cart items will be populated by JavaScript -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <strong>Total: ₹<span id="cart-total">0</span></strong>
+            </div>
+        <div class="form-group" style="margin-top: 1rem;">
+        <label for="delivery-location" class="form-label">Delivery Location</label>
+        <select id="delivery-location" class="form-control">
+            <option value="">Select a location</option>
+            <option>AB1</option>
+            <option>AB2</option>
+            <option>AB3</option>
+            <option>AB4</option>
+            <option>Admin Building</option>
+            <option>A1 Block</option>
+            <option>B1 Block</option>
+            <option>C1 Block</option>
+            <option>D1 Block</option>
+        </select>
+    </div>
+    <button class="btn btn--primary btn--full-width" onclick="orderNow()">Order Now</button>
+</div>
+
+    </div>
+
+    <!-- Cart Overlay -->
+    <div id="cart-overlay" class="cart-overlay" onclick="toggleCart()"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
