@@ -43,7 +43,7 @@ On college campuses, coordinating food orders and deliveries is time-consuming. 
 ---
 
 ### 🌐 Deployment
-Live website (if deployed): [Add your Netlify/Vercel/Render link here]
+Live website : https://yodaeats.netlify.app/
 
 ---
 
