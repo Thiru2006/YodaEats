@@ -9,8 +9,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    
 </head>
 <body>
+    <div class="stars"></div>
     <!-- Opening Crawl Splash Screen -->
     <div id="splash-screen" class="splash-screen">
         <div class="starfield"></div>
@@ -31,6 +33,7 @@
             <nav class="nav-menu">
                 <button class="nav-link" onclick="showSection('home')">Home</button>
                 <button class="nav-link" onclick="showSection('about')">About</button>
+                <button class="nav-link" onclick="showSection('myorders')">My Orders</button>
                 <button class="nav-link cart-btn" onclick="toggleCart()">
                     Cart <span id="cart-count" class="cart-count">0</span>
                 </button>
@@ -143,6 +146,23 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+        <section id="myorders-section" class="section myorders-section">
+            <div class="container">
+                <h2>My Orders</h2>
+                <div class="myorders-tabs">
+                    <button class="tab-btn active" onclick="showOrdersTab('active')">Active Orders</button>
+                    <button class="tab-btn" onclick="showOrdersTab('previous')">Previous Orders</button>
+                </div>
+                <div id="active-orders" class="orders-content">
+                    <!-- Active orders will be shown here -->
+                    <p style="margin-top: 1rem; color: #ccc;">No active orders yet.</p>
+                </div>
+                <div id="previous-orders" class="orders-content" style="display: none;">
+                    <!-- Previous orders will be shown here -->
+                    <p style="margin-top: 1rem; color: #ccc;">No previous orders yet.</p>
                 </div>
             </div>
         </section>

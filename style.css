@@ -1526,3 +1526,80 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+.order-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid #ffe81f;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  color: #ffe81f;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+.status-confirmed {
+  background-color: #ffcc00;
+  color: black;
+}
+.status-preparing {
+  background-color: orange;
+  color: black;
+}
+.status-ready {
+  background-color: green;
+  color: white;
+}
+.status-out-for-delivery {
+  background-color: dodgerblue;
+  color: white;
+}
+.status-delivered {
+  background-color: gray;
+  color: white;
+}
+
+.order-card p strong {
+  color: #ffe81f;
+}
+
+.rating-area {
+  margin-top: 0.5rem;
+}
+
+.rating-area select,
+.rating-area textarea {
+  margin: 0.25rem 0;
+  padding: 0.25rem;
+  border: 1px solid #ffe81f;
+  border-radius: 4px;
+  background: rgba(0,0,0,0.7);
+  color: #ffe81f;
+}
+
+
+.restaurant-card,
+.order-card {
+  transition: transform 0.5s ease;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.restaurant-card:hover,
+.order-card:hover {
+  transform: rotateY(10deg) scale(1.02);
+}
+
+
+body {
+  background-color: black;
+  color: #ffe81f; /* optional for yellow star wars text */
+  overflow-x: hidden;
+}
+
+

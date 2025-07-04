@@ -4,8 +4,10 @@ const appState = {
   currentRestaurant: null,
   cart: [],
   deliveryOrders: [],
+  studentOrders: [],
   myDeliveries: [],
   totalEarnings: 0,
+  orderTimers: {}, 
   isCartOpen: false
 };
 
@@ -191,6 +193,15 @@ function showSection(sectionName) {
   // Scroll to top
   window.scrollTo(0, 0);
 }
+
+function showOrdersTab(tabName) {
+  document.querySelectorAll('.orders-content').forEach(el => el.style.display = 'none');
+  document.getElementById(`${tabName}-orders`).style.display = 'block';
+  
+  document.querySelectorAll('.myorders-tabs .tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector(`.myorders-tabs .tab-btn[onclick="showOrdersTab('${tabName}')"]`).classList.add('active');
+}
+
 
 // Restaurant Functions
 function populateRestaurantCarousel() {
@@ -434,24 +445,191 @@ function showCartNotification() {
     notification.remove();
   }, 2000);
 }
+function renderStudentOrders() {
+    const activeContainer = document.getElementById('active-orders');
+    const previousContainer = document.getElementById('previous-orders');
+
+    activeContainer.innerHTML = '';
+    previousContainer.innerHTML = '';
+
+    if (appState.studentOrders.length === 0) {
+        activeContainer.innerHTML = '<p style="margin-top: 1rem; color: #ccc;">No active orders yet.</p>';
+        previousContainer.innerHTML = '<p style="margin-top: 1rem; color: #ccc;">No previous orders yet.</p>';
+        return;
+    }
+
+    appState.studentOrders.forEach(order => {
+        const html = `
+          <div class="order-card">
+            <h4>Order ID: ${order.id}</h4>
+            <p><strong>Items:</strong> ${order.items.map(i => i.name).join(', ')}</p>
+            <p><strong>Delivery:</strong> ${order.location}</p>
+            <p><strong>Total:</strong> ₹${order.total}</p>
+            <p><strong>Estimated Delivery:</strong> ${order.estimatedDelivery} minutes</p>
+            <p><strong>Status:</strong> <span class="status-badge status-${order.status}">${order.status.replace(/-/g,' ')}</span></p>
+            ${order.status === 'delivered' && order.rating === null ? `
+              <div class="rating-area">
+              <label for="rating-${order.id}">Rate this delivery:</label>
+              <select id="rating-${order.id}" onchange="submitRating('${order.id}')">
+                <option value="">Select</option>
+                <option value="1">⭐</option>
+                <option value="2">⭐⭐</option>
+                <option value="3">⭐⭐⭐</option>
+                <option value="4">⭐⭐⭐⭐</option>
+                <option value="5">⭐⭐⭐⭐⭐</option>
+              </select>
+            <textarea id="feedback-${order.id}" placeholder="Optional feedback"></textarea>
+            <button class="btn btn--sm btn--secondary" onclick="submitRating('${order.id}')">Submit</button>
+            </div>
+            ` : order.rating !== null ? `
+            <p><strong>Rating:</strong> ${'⭐'.repeat(order.rating)}</p>
+            ${order.feedback ? `<p><strong>Feedback:</strong> ${order.feedback}</p>` : ''}
+            ` : ''}
+
+            ${
+              (order.status === 'confirmed' || order.status === 'preparing') 
+              ? `<button class="btn btn--secondary btn--sm" onclick="cancelOrder('${order.id}')">Cancel Order</button>`
+              : ''
+            }
+          </div>
+        `;
+        
+
+        if (['confirmed', 'preparing', 'ready', 'out-for-delivery'].includes(order.status)) {
+          activeContainer.innerHTML += html;
+        } else if (order.status === 'delivered') {
+          previousContainer.innerHTML += html;
+        }
+
+    });
+}
+
+function submitRating(orderId) {
+  const order = appState.studentOrders.find(o => o.id === orderId);
+  if (!order) return;
+
+  const ratingValue = document.getElementById(`rating-${orderId}`).value;
+  const feedbackValue = document.getElementById(`feedback-${orderId}`).value;
+
+  if (!ratingValue) {
+    alert('Please select a star rating.');
+    return;
+  }
+
+  order.rating = parseInt(ratingValue);
+  order.feedback = feedbackValue || null;
+
+  alert(`Thanks for rating your delivery with ${order.rating} star(s)!`);
+
+  renderStudentOrders();
+  updateDeliveryPersonProfile(order.rating);
+}
+
+function updateDeliveryPersonProfile(newRating) {
+  appState.deliveryPersonProfile.totalDeliveries++;
+  appState.deliveryPersonProfile.totalEarnings += 50; // or get actual order earnings
+  appState.deliveryPersonProfile.ratings.push(newRating);
+}
+
+function cancelOrder(orderId) {
+  if (appState.orderTimers[orderId]) {
+    appState.orderTimers[orderId].forEach(tid => clearTimeout(tid));
+    delete appState.orderTimers[orderId];
+  }
+
+  // remove from studentOrders
+  appState.studentOrders = appState.studentOrders.filter(o => o.id !== orderId);
+
+  // remove from delivery pool
+  appState.deliveryOrders = appState.deliveryOrders.filter(o => o.id !== orderId);
+
+  alert(`Your order ${orderId} has been cancelled.`);
+
+  renderStudentOrders();
+  populateAvailableOrders();
+}
+
 
 function orderNow() {
     if (appState.cart.length === 0) {
         alert('Your cart is empty, young Padawan!');
         return;
     }
-    
+
     const selectedLocation = document.getElementById('delivery-location').value;
     if (!selectedLocation) {
         alert('Please select a delivery location before placing your order.');
         return;
     }
-  
+
+    // create the order
+    const newOrder = {
+        id: `order-${Date.now()}`,
+        items: [...appState.cart],
+        location: selectedLocation,
+        total: appState.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+        status: 'confirmed', // progress starts here
+        estimatedDelivery: Math.floor(Math.random() * 25 + 20), // 20-45 min
+        rating: null, // rating to be added later
+        feedback: null
+    };
+
+    appState.studentOrders.push(newOrder);
+
+    // ALSO push to delivery pool
+    appState.deliveryOrders.push({
+        id: newOrder.id,
+        restaurantName: newOrder.items[0].restaurantName,
+        itemName: newOrder.items.map(i => i.name).join(', '),
+        pickupLocation: newOrder.items[0].restaurantName,
+        dropLocation: newOrder.location,
+        earnings: Math.floor(Math.random() * 30 + 40),
+        isReady: false,
+        status: 'available'
+    });
+
     appState.cart = [];
     updateCartDisplay();
     toggleCart();
     alert(`May the forks be with you! Your order will be delivered to ${selectedLocation}.`);
+
+    // kick off progress tracking timers
+    trackOrderProgress(newOrder.id);
+
+    renderStudentOrders();
 }
+
+function trackOrderProgress(orderId) {
+    const order = appState.studentOrders.find(o => o.id === orderId);
+    if (!order) return;
+
+    appState.orderTimers[orderId] = [];
+
+    const t1 = setTimeout(() => {
+        order.status = 'preparing';
+        renderStudentOrders();
+    }, 5000);
+    appState.orderTimers[orderId].push(t1);
+
+    const t2 = setTimeout(() => {
+        order.status = 'ready';
+        renderStudentOrders();
+    }, 15000);
+    appState.orderTimers[orderId].push(t2);
+
+    const t3 = setTimeout(() => {
+        order.status = 'out-for-delivery';
+        renderStudentOrders();
+    }, 30000);
+    appState.orderTimers[orderId].push(t3);
+
+    const t4 = setTimeout(() => {
+        order.status = 'delivered';
+        renderStudentOrders();
+    }, 50000);
+    appState.orderTimers[orderId].push(t4);
+}
+
 
 
 // Delivery Functions
@@ -466,6 +644,14 @@ function generateDeliveryOrders() {
     const dropLocation = locations[Math.floor(Math.random() * locations.length)];
     const earnings = Math.floor(Math.random() * (restaurantData.earningsPerOrderRange[1] - restaurantData.earningsPerOrderRange[0] + 1)) + restaurantData.earningsPerOrderRange[0];
     const isReady = Math.random() > 0.5;
+    if (!isReady) {
+      const randomTime = Math.floor(Math.random() * 20000) + 10000; // 10s to 30s
+      setTimeout(() => {
+        order.isReady = true;
+        populateAvailableOrders(); // refresh the delivery page
+      }, randomTime);
+    }
+
     
     orders.push({
       id: `order-${i + 1}`,
