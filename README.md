@@ -31,14 +31,14 @@ On college campuses, coordinating food orders and deliveries is time-consuming. 
 - Advertising / featured listing fees from campus restaurants
 
 ---
-🚀 **Hackathon Challenges / Bounties for Bugalorians - YodaEats**
-**Challenge 1: Sith Dark Theme**  
+ ### 🚀 Hackathon Challenges / Bounties for Bugalorians - YodaEats**
+#### **Challenge 1: Sith Dark Theme**  
 Implement a fully Sith-inspired dark theme for the website, using deep reds, blacks, and subtle neon elements to create a menacing, elegant Star Wars Sith look.
 
-**Challenge 2: Star Wars Easter Egg on Loading Screen**  
+#### **Challenge 2: Star Wars Easter Egg on Loading Screen**  
 Add a hidden Star Wars–style Easter egg on the loading screen. This could be a random Yoda quote, a reference to a Star Wars scene, or a small interactive animation to surprise users.
 
-**Challenge 3: 3D Light Saber Scrollbar**  
+#### **Challenge 3: 3D Light Saber Scrollbar**  
 Design a custom 3D light saber–inspired scrollbar. The scrollbar should glow, and as the user scrolls, it should dynamically expand or change colors in a way that resembles a lightsaber powering up.
 
 ---
