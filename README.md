@@ -48,7 +48,7 @@ Live website : https://yodaeats.netlify.app/
 ---
 
 ### 🎥 YouTube Video Demo
-[Add your YouTube public video link here]
+https://youtu.be/P60xdomXESM?si=Q_R9vZU-OdmiZ_fP
 
 **Video Contents Checklist:**
 - Introduction to YodaEats
